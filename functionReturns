@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+
+
+
+contract test1 {
+    uint myUint;
+
+    function sumOf(uint num1, uint num2)public pure returns(bool test, uint result, bool isSuccess){
+        return (false, num1 + num2, true);
+    }
+
+    function singleReturn()public pure returns(uint result){
+        return 12;
+    }
+    
+    function myFunc() public {
+        (, uint result,) = sumOf(4, 9);
+        myUint = result;
+    }
+}
