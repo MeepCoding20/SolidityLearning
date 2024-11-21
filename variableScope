@@ -1,0 +1,25 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+
+
+contract test3{
+    // variables
+    uint public maxTokens = 10000;
+    string public tokenName = "Meeps Token";
+    bool public isTokenSaleOne = true;
+    uint public saleStartTime;
+
+    constructor(){
+        //block.timestamp is a global variable
+        saleStartTime = block.timestamp;
+    }
+
+    function sumOf(uint a, uint b) public view returns(uint, string memory){
+        // Local variables
+        uint result = a + b;
+        string memory resultName = tokenName;
+
+        return (result, resultName);
+    }
+}
