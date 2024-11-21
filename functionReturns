@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+
+
+contract test {
+
+    uint public myNum = 1;
+
+    function writeFunc(uint newNum) public {
+        myNum = newNum;
+    }
+
+    function viewFunc() public view returns(uint) {
+        return myNum;
+    }
+        
+    function pureFunc(uint myNum1, uint myNum2) public pure returns(uint){
+        return myNum1 + myNum2;
+    }
+    
+}
