@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+
+contract test {
+    mapping(address => bool) public users;
+
+    //set user subscription, checks if user address set to true in mapping for 'users' 
+    function setUserSubscriptionStatus(address userAddress, bool status) public {
+        users[userAddress] = status;
+    }
+
+    //set 
+    function getUserSubscriptionStatus(address userAddress) public view returns(bool) {
+        return users[userAddress];
+    }
+
+    //remove
+    function deleteUserSubscriptionStatus(address userAddress) public {
+        delete users[userAddress];
+    }
+}
