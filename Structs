@@ -1,0 +1,26 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.7.0 <0.9.0;
+
+contract test {
+    uint orderCount;
+
+    struct Order {
+        address client;
+        uint pizzaSelection;
+        bool delivered;
+    }
+
+    mapping(uint => Order) public orders;
+
+    function placeOrder(uint pizzaSelection) public returns(uint){
+        Order memory newOrder = Order(msg.sender, pizzaSelection, false);
+        orderCount++;
+        orders[orderCount] = newOrder;
+        return orderCount;
+    }
+    
+    function delivered(uint orderNumber) public {
+        orders[orderNumber].delivered = true;
+    }
+}
