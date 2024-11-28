@@ -1,0 +1,23 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.8.18 <0.9.0;
+
+contract Name {
+    //Comparison operators
+    uint a = 5;
+    uint b = 10; 
+
+    uint c = 1;
+    uint d = 2;
+
+    constructor(){
+        c += a; // c = c + a
+        d *a; // d = d * a
+    }
+
+} 
+
+
+
+
+
