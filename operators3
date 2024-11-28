@@ -1,0 +1,20 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.8.18 <0.9.0;
+
+contract Name {
+   
+    //Ternary Operator
+    // <conditional> ? <if-true> : <if-false>
+
+    uint a = 5;
+    uint b = 10; 
+    
+    uint public c = (a < b) ? a : b; // 
+
+} 
+
+
+
+
+
