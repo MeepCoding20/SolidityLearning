@@ -1,0 +1,104 @@
+// SPDX-License-Identifier: GPL-3.0
+
+pragma solidity >=0.8.18 <0.9.0;
+
+import "./19_GlobalCost.sol"; //importing other contract
+
+interface IName{
+    function placeOrder() external payable returns(uint);
+    function delivered(uint orderNumber) external;
+}
+
+contract Name is IName {
+
+    uint public orderCount;
+
+    address public owner; //for function modifiers
+
+    struct Order { //making new struct for orders
+        address client;
+        bool delivered;
+    }
+
+    mapping(uint => Order) public orders; //creating mapping
+
+    event OrderPlaced(address indexed user, uint indexed orderCount); //creating event - up to 3 idexes per event
+    event Delivered(uint indexed orderNumber); //creating second event
+
+    error PaymentNotEnoughForPizza(address user); //creating custom error
+
+    constructor(){
+        owner = msg.sender; //owner is address that deployed contract
+    }
+
+    modifier onlyOwner(){ //can specify certain address in () --> onlyOwner(address == 0x343___C4)
+        require(owner == msg.sender); //must be contract owner to run function
+        _;
+    }
+    
+    function placeOrder() public payable returns(uint){
+        GlobalCost globalCost = GlobalCost(0x831e722fe6B1832EAebD9D008E91C4dF1f7d042a);
+        if(msg.value < globalCost.getCost()) { //fetch cost variable from other contract
+            revert PaymentNotEnoughForPizza(msg.sender); //msg.sender is the address of the user
+        }
+        Order memory newOrder = Order(msg.sender, false); //new order created using struct variable list
+        orderCount++; //order count incremented
+        orders[orderCount] = newOrder; //array number of current order after increment is the newOrder
+        emit OrderPlaced(msg.sender, orderCount); //emit is the keyword for triggering the event to occur //event triggered to track variables on chain
+        return orderCount;
+    }
+    
+    function delivered(uint orderNumber) public onlyOwner {
+        orders[orderNumber].delivered = true; //???set current order array value to true and assert that its true???
+        assert(orders[orderNumber].delivered == true);
+        emit Delivered(orderNumber); //event triggered to track ordernumber on chain
+    }
+
+    function OrdersAwaitingDelivery() public view onlyOwner returns(uint[] memory)  { //will involve a loop - be careful as can cost a LOT of gas
+        uint[] memory tempOrders = new uint[](orderCount);
+        uint count = 0;
+        uint i = 1;
+
+        while(i <= orderCount) { //while loop runs as long as i is less than or equal to orderCount
+            if(!orders[i].delivered){ //checking if current iteration order is not delivered
+                tempOrders[count] = i; //if not delivered, order number '(i)' is stored in the 'tempOrders' array at position 'count'
+                count++;
+            }
+            i++;
+        }
+
+    uint[] memory result = new uint[](count); //new array 'result' created with equal length to 'count'
+        for(uint j = 0; j < count; j++){
+            result[j] = tempOrders[j]; //???result array now only includes values up to count, removes 0's in array after orders delivered???
+        }
+
+        return result;
+    }
+
+    function withdraw() public onlyOwner {
+        // payable(msg.sender).transfer(address(this).balance);
+
+        // bool success = payable(msg.sender).send(address(this).balance);
+        // require(success);
+
+        (bool success,) = msg.sender.call{value:address(this).balance }("");
+        require(success);
+    }
+
+    fallback() external payable {
+
+    }
+
+    receive() external payable {
+
+    }
+
+
+
+
+
+
+} 
+
+
+
