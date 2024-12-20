@@ -1,0 +1,18 @@
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.18 <0.9.0;
+
+contract GlobalCost{
+    uint public cost = 0.1 ether;
+
+    constructor(uint newCost){
+        cost = newCost;
+    }
+
+    function getCost() public view returns(uint){
+        return cost;
+    }
+
+    function setCost(uint newCost) public {
+        cost = newCost;
+    }
+}
